@@ -4,6 +4,7 @@ const fs = require("fs");
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 const player = require("play-sound")();
 const app = express();
+const fetch = require('node-fetch');
 
 //static files are served
 app.use(express.static(path.join(__dirname, "public")));
@@ -68,8 +69,8 @@ async function readNews() {
   }
 
   let colnews = "The other trending news of today are" + "\n";
-  const response1 = await fetch(news_url);
-  const dat1 = await response1.json();
+  const response1 = await fetch(api_url);
+  const dat1 = await response.json();
 
   for (let i = 0; i < 5; i++) {
     const t1 = dat1.articles[i].title;
