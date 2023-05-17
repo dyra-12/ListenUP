@@ -58,32 +58,45 @@ function textToSpeech(text) {
     }
   );
 }
+
 async function readNews() {
-  const response = await fetch(api_url);
-  const dat = await response.json();
+  try {
+    const response = await fetch(api_url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const dat = await response.json();
 
-  let newsText =
-    "Welcome to Listen up: Empowering the Visually Impaired with an Accessible News Reader."+ "\n" + " These are the top Headlines of today." + "\n";
-  for (let i = 0; i < 10; i++) {
-    const title = dat.articles[i].title;
-    const content = dat.articles[i].description;
-    newsText = newsText + "Title: " + title + "\n" + content + "\n";
+    let newsText =
+      "Welcome to Listen up: Empowering the Visually Impaired with an Accessible News Reader.\nThese are the top headlines of today.\n";
+    for (let i = 0; i < 10; i++) {
+      const title = dat.articles[i].title;
+      const content = dat.articles[i].description;
+      newsText += "Title: " + title + "\n" + content + "\n";
+    }
+
+    let colnews = "The other trending news of today are\n";
+    const response1 = await fetch(news_url);
+    if (!response1.ok) {
+      throw new Error(`HTTP error! Status: ${response1.status}`);
+    }
+    const dat1 = await response1.json();
+
+    for (let i = 0; i < 5; i++) {
+      const t1 = dat1.articles[i].title;
+      colnews += t1 + "\n";
+    }
+
+    const full_news =
+      newsText + "\n" + colnews + "\n" + "This is all the top & trending news for today";
+
+    console.log(full_news);
+    textToSpeech(full_news);
+  } catch (error) {
+    console.error("An error occurred while fetching or processing the news data:", error);
   }
-
-  let colnews = "The other trending news of today are" + "\n";
-  const response1 = await fetch(api_url);
-  const dat1 = await response.json();
-
-  for (let i = 0; i < 5; i++) {
-    const t1 = dat1.articles[i].title;
-    colnews = colnews + t1 +  "\n";
-  }
-
-let full_news = newsText+ "\n" + colnews + "\n" + 'This is all the top & trending news for today'
-
-  console.log(full_news);
-  textToSpeech(full_news);
 }
+
 
 readNews();
 
