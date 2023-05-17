@@ -1,6 +1,5 @@
 const path = require("path");
 const express = require("express");
-const fs = require("fs");
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 const player = require("play-sound")();
 const app = express();
@@ -34,19 +33,10 @@ function textToSpeech(text) {
     `${text}`,
     (result) => {
       if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
-        // Convert ArrayBuffer to Buffer
-        const audioData = Buffer.from(result.audioData);
-
-        // Save speech output to a file
-        const speechOutputFile = "news_article.wav"; // Output file name
-        fs.writeFileSync(speechOutputFile, audioData);
+        const audioDataStream = sdk.AudioDataStream.fromResult(result);
 
         // Play speech output
-        player.play(speechOutputFile, (err) => {
-          if (err) {
-            console.error(`Error playing speech output: ${err}`);
-          }
-        });
+        player.play(Buffer.from(audioDataStream.buffer));
       }
     },
     (error) => {
@@ -92,9 +82,6 @@ async function readNews() {
     console.error("An error occurred while fetching or processing the news data:", error);
   }
 }
-
- 
-
 
 // Start the server
 app.listen(3000, () => {
