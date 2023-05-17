@@ -4,7 +4,9 @@ const fs = require("fs");
 const sdk = require("microsoft-cognitiveservices-speech-sdk");
 const player = require("play-sound")();
 const app = express();
-const fetch = require('node-fetch');
+const fetch = require('isomorphic-fetch');
+global.fetch = fetch;
+
 
 //static files are served
 app.use(express.static(path.join(__dirname, "public")));
