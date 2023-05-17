@@ -5,11 +5,6 @@ const sdk = require("microsoft-cognitiveservices-speech-sdk");
 const player = require("play-sound")();
 const app = express();
 const fetch = require('isomorphic-fetch');
-global.fetch = fetch;
-
-
-//static files are served
-app.use(express.static(path.join(__dirname, "public")));
 
 // Set up Azure Cognitive Services Text to Speech
 const speechKey = "a78237149a864882b0c75466fab83131";
@@ -20,9 +15,12 @@ const speechConfig = sdk.SpeechConfig.fromSubscription(
 );
 const synthesizer = new sdk.SpeechSynthesizer(speechConfig);
 
+//static files are served
+app.use(express.static(path.join(__dirname, "public")));
+
 // Endpoint to trigger speech synthesis
 app.get("/", (req, res) => {
-  //readNews();
+  readNews();
   res.sendFile(path.join(__dirname, "public", "index.html")); // Send the HTML file as response
 });
 
@@ -30,8 +28,6 @@ const api_url =
   "https://newsapi.org/v2/top-headlines?country=in&apiKey=1116921095d64299b278259fee0c0cca";
 const news_url =
   "https://gnews.io/api/v4/top-headlines?category=general&lang=en&country=in&apikey=7e5819fe78caf89ae45180c790366be3";
-
-//let title;
 
 function textToSpeech(text) {
   synthesizer.speakTextAsync(
@@ -69,9 +65,9 @@ async function readNews() {
 
     let newsText =
       "Welcome to Listen up: Empowering the Visually Impaired with an Accessible News Reader.\nThese are the top headlines of today.\n";
-    for (let i = 0; i < 10; i++) {
-      const title = dat.articles[i].title;
-      const content = dat.articles[i].description;
+    for (const article of dat.articles) {
+      const title = article.title;
+      const content = article.description;
       newsText += "Title: " + title + "\n" + content + "\n";
     }
 
@@ -82,8 +78,8 @@ async function readNews() {
     }
     const dat1 = await response1.json();
 
-    for (let i = 0; i < 5; i++) {
-      const t1 = dat1.articles[i].title;
+    for (const article of dat1.articles) {
+      const t1 = article.title;
       colnews += t1 + "\n";
     }
 
@@ -97,8 +93,8 @@ async function readNews() {
   }
 }
 
+ 
 
-readNews();
 
 // Start the server
 app.listen(3000, () => {
