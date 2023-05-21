@@ -39,7 +39,6 @@ their needs.
 <br>
 
 <h2> Links:</h2>
-<br>
 Website URL - https://listenup-mock.netlify.app/
 <br>
 Website Demo Video URL - https://drive.google.com/file/d/109aKCn5nvDVaGgyI5z_jdAPrwUzzDmsO/view?usp=share_link
