@@ -32,9 +32,14 @@ news content more inclusive and accessible. This functionality empowers them to
 independently access news, stay informed, and actively engage with the world around them, promoting 
 inclusivity and equal access to information.
 <br>
+<br>
 The website provides visually impaired individuals with an easy-to-use user interface (UI) designed specifically for 
 their needs.
-<br><br>
+<br>
+<br>
+
+<h2> Links:</h2>
+<br>
 Website URL - https://listenup-mock.netlify.app/
 <br>
 Website Demo Video URL - https://drive.google.com/file/d/109aKCn5nvDVaGgyI5z_jdAPrwUzzDmsO/view?usp=share_link
